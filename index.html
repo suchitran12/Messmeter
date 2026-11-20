@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MessMeter – ZeroWaste Mess</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <header>
+    <div class="logo">🍱 MessMeter</div>
+    <div class="view-toggle">
+      <button id="btn-student"     onclick="app.switchView('student')">Student</button>
+      <button id="btn-supervisor"  onclick="app.switchView('supervisor')">Supervisor</button>
+    </div>
+    <div class="user-pill" id="user-pill">👤 Sherya </div>
+  </header>
+
+  <main>
+
+    <!-- ════════════════ STUDENT VIEW ════════════════ -->
+    <div id="view-student" class="view">
+
+      <div class="day-tabs" id="day-tabs"></div>
+      <div class="meal-grid" id="meal-grid"></div>
+
+    </div>
+
+    <!-- ════════════════ SUPERVISOR VIEW ════════════════ -->
+    <div id="view-supervisor" class="view">
+
+      <section class="section">
+        <h2 class="section-title">📊 Live Headcount Predictor — Today</h2>
+        <div class="headcount-grid" id="headcount-grid"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-row">
+          <h2 class="section-title">🗑️ Food Waste Log</h2>
+          <button class="btn-primary" onclick="supervisor.openWasteModal()">+ Log Waste</button>
+        </div>
+        <div class="table-wrap">
+          <table class="waste-table">
+            <thead>
+              <tr>
+                <th>Date</th><th>Meal</th>
+                <th>Rice (kg)</th><th>Dal (kg)</th><th>Veg (kg)</th><th>Roti (kg)</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody id="waste-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">🌍 ZeroWaste KPI Dashboard</h2>
+        <div class="charts-grid">
+          <div class="chart-card">
+            <h3>Weekly Waste (kg)</h3>
+            <canvas id="chart-waste"></canvas>
+          </div>
+          <div class="chart-card">
+            <h3>Money Saved This Week (₹)</h3>
+            <canvas id="chart-savings"></canvas>
+          </div>
+          <div class="chart-card">
+            <h3>Top Dish Ratings</h3>
+            <canvas id="chart-ratings"></canvas>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ════ WASTE LOG MODAL ════ -->
+  <div id="waste-modal" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Log Food Waste</h3>
+        <button class="btn-close" onclick="supervisor.closeWasteModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <label>Meal</label>
+          <select id="waste-meal">
+            <option value="breakfast">Breakfast</option>
+            <option value="lunch">Lunch</option>
+            <option value="snack">Snack</option>
+            <option value="dinner" selected>Dinner</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Rice (kg)</label>
+          <input type="number" id="waste-rice" placeholder="0.0" min="0" step="0.1">
+        </div>
+        <div class="form-row">
+          <label>Dal (kg)</label>
+          <input type="number" id="waste-dal" placeholder="0.0" min="0" step="0.1">
+        </div>
+        <div class="form-row">
+          <label>Vegetables (kg)</label>
+          <input type="number" id="waste-veg" placeholder="0.0" min="0" step="0.1">
+        </div>
+        <div class="form-row">
+          <label>Roti (kg)</label>
+          <input type="number" id="waste-roti" placeholder="0.0" min="0" step="0.1">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="supervisor.closeWasteModal()">Cancel</button>
+        <button class="btn-primary" onclick="supervisor.saveWasteLog()">Save Log</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ RATING MODAL ════ -->
+  <div id="rating-modal" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="rating-title">Rate Your Meal</h3>
+        <button class="btn-close" onclick="student.closeRatingModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="star-rating" id="star-rating">
+          <span class="star" data-val="1">★</span>
+          <span class="star" data-val="2">★</span>
+          <span class="star" data-val="3">★</span>
+          <span class="star" data-val="4">★</span>
+          <span class="star" data-val="5">★</span>
+        </div>
+        <textarea id="rating-comment" placeholder="Share your thoughts (optional)…" rows="3"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="student.closeRatingModal()">Cancel</button>
+        <button class="btn-primary" onclick="student.submitRating()">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/student.js"></script>
+  <script src="js/supervisor.js"></script>
+  <script src="js/charts.js"></script>
+</body>
+</html>
